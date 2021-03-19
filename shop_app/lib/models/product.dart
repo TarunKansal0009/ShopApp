@@ -1,13 +1,11 @@
-import 'dart:ffi';
-
 import 'package:flutter/cupertino.dart';
 
 class Product {
   final String id;
   final String title;
   final String description;
-  final Double price;
-  final String imageurl;
+  final double price;
+  final String imageUrl;
   bool isFavorite;
 
   Product({
@@ -15,7 +13,7 @@ class Product {
     @required this.description,
     @required this.title,
     @required this.price,
-    @required this.imageurl,
-     this.isFavorite=false,
+    @required this.imageUrl,
+    this.isFavorite = false,
   });
 }
