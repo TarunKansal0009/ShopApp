@@ -41,13 +41,13 @@ class ProductsOverviewScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Shopping App'),
+        title: Text('IET STUDENT CHAPTER'),
       ),
       body: GridView.builder(
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisSpacing: 5,
-          crossAxisCount: 2,
-          childAspectRatio: 3 / 2,
+          crossAxisCount: 1,
+          childAspectRatio: 3 / 1.5,
           mainAxisSpacing: 10,
         ),
         itemBuilder: (ctx, index) => ProductItem(
