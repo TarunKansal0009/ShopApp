@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:shop_app/widgets/product_item.dart';  
-import '../models/product.dart';
+import '../widgets/product_grid.dart';
 
 class ProductsOverviewScreen extends StatelessWidget {
   @override
@@ -8,9 +7,15 @@ class ProductsOverviewScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('IET STUDENT CHAPTER'),
+        actions: <Widget>[
+          PopupMenuButton(
+              itemBuilder: (ctx) => [PopupMenuItem(child: Text('Favorites'))],
+              icon: Icon(
+                Icons.more_vert,
+              ))
+        ],
       ),
       body: ProductGrid(),
     );
   }
 }
-
