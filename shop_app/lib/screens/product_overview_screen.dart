@@ -1,7 +1,18 @@
 import 'package:flutter/material.dart';
 import '../widgets/product_grid.dart';
 
-class ProductsOverviewScreen extends StatelessWidget {
+enum FilterOptions {
+  Favorites,
+  All,
+}
+
+class ProductsOverviewScreen extends StatefulWidget {
+  @override
+  _ProductsOverviewScreenState createState() => _ProductsOverviewScreenState();
+}
+
+class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
+  var _showFavorite = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -9,13 +20,31 @@ class ProductsOverviewScreen extends StatelessWidget {
         title: Text('IET STUDENT CHAPTER'),
         actions: <Widget>[
           PopupMenuButton(
-              itemBuilder: (ctx) => [PopupMenuItem(child: Text('Favorites'))],
+              onSelected: (FilterOptions selectedValue) {
+                setState(() {
+                  if (selectedValue == FilterOptions.Favorites) {
+                    _showFavorite = true;
+                  } else {
+                    _showFavorite = false;
+                  }
+                });
+              },
+              itemBuilder: (ctx) => [
+                    PopupMenuItem(
+                      child: Text('Favorite Articles'),
+                      value: FilterOptions.Favorites,
+                    ),
+                    PopupMenuItem(
+                      child: Text('All Articles'),
+                      value: FilterOptions.All,
+                    )
+                  ],
               icon: Icon(
                 Icons.more_vert,
               ))
         ],
       ),
-      body: ProductGrid(),
+      body: ProductGrid(_showFavorite),
     );
   }
 }

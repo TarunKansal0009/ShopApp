@@ -36,14 +36,24 @@ class Products with ChangeNotifier {
           'https://cdn.pixabay.com/photo/2016/10/02/22/17/red-t-shirt-1710578_1280.jpg',
     ),
   ];
+
+  //var showFavoritesOnly = false;
+
   List<Product> get items {
+    // if (showFavoritesOnly) {
+    //   return _items.where((prodItem) => prodItem.isFavorite).toList();
+    // }
     return [..._items];
+  }
+
+  List<Product> get favoriteItems {
+    return _items.where((element) => element.isFavorite).toList();
   }
 
   Product findById(String id) {
     return _items.firstWhere((prod) => prod.id == id);
   }
-  
+
   void addProduct() {
     // _items.add(value);
     notifyListeners();
