@@ -23,6 +23,7 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text('IET STUDENT CHAPTER'),
+        
         actions: <Widget>[
           PopupMenuButton(
               onSelected: (FilterOptions selectedValue) {
@@ -44,6 +45,7 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
                       value: FilterOptions.All,
                     )
                   ],
+                  
               icon: Icon(
                 Icons.more_vert,
               )),
@@ -55,7 +57,7 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
                 Icons.shopping_cart,
               ),
               onPressed: () {
-                Navigator.pushNamed(context, CartScreen.routeName);
+                Navigator.of(context).pushNamed(CartScreen.routeName);
               },
             ),
           ),
