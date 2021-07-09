@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -47,6 +45,10 @@ class _EditProductScreenState extends State<EditProductScreen> {
   }
 
   void _saveForm() {
+    final isValid = _form.currentState.validate();
+    if (!isValid) {
+      return;
+    }
     _form.currentState.save();
     print(_editedProduct.title);
     print(_editedProduct.price);
@@ -68,18 +70,24 @@ class _EditProductScreenState extends State<EditProductScreen> {
           child: ListView(
             children: <Widget>[
               TextFormField(
-                textInputAction: TextInputAction.next,
-                decoration: InputDecoration(labelText: 'Title'),
-                onSaved: (value) {
-                  _editedProduct = Product(
-                    title: value,
-                    price: _editedProduct.price,
-                    imageUrl: _editedProduct.imageUrl,
-                    description: _editedProduct.description,
-                    id: null,
-                  );
-                },
-              ),
+                  textInputAction: TextInputAction.next,
+                  decoration: InputDecoration(labelText: 'Title'),
+                  onSaved: (value) {
+                    _editedProduct = Product(
+                      title: value,
+                      price: _editedProduct.price,
+                      imageUrl: _editedProduct.imageUrl,
+                      description: _editedProduct.description,
+                      id: null,
+                    );
+                  },
+                  validator: (value) {
+                    if (value.isEmpty) {
+                      return 'Please provide a title';
+                    }
+
+                    return null;
+                  }),
               TextFormField(
                 textInputAction: TextInputAction.next,
                 decoration: InputDecoration(labelText: 'Price'),
