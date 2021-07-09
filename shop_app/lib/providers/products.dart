@@ -81,5 +81,6 @@ class Products with ChangeNotifier {
     String id,
   ) {
     _items.removeWhere((element) => element.id == id);
+    notifyListeners();
   }
 }
