@@ -59,7 +59,8 @@ class Products with ChangeNotifier {
   void addProduct(Product product) {
     const url =
         'https://article-app-c40ae-default-rtdb.firebaseio.com/products.json';
-    http.post(
+    http
+        .post(
       Uri.parse(url),
       body: json.encode({
         'title': product.title,
@@ -68,17 +69,20 @@ class Products with ChangeNotifier {
         'imageUrl': product.imageUrl,
         'isFavorite': product.isFavorite,
       }),
-    );
-    final newProduct = Product(
-      id: DateTime.now().toString(),
-      description: product.description,
-      title: product.title,
-      price: product.price,
-      imageUrl: product.imageUrl,
-    );
-    _items.add(newProduct);
+    )
+        .then((response) {
+      print(jsonDecode(response.body));
+      final newProduct = Product(
+        id: jsonDecode(response.body)['name'],
+        description: product.description,
+        title: product.title,
+        price: product.price,
+        imageUrl: product.imageUrl,
+      );
+      _items.add(newProduct);
 
-    notifyListeners();
+      notifyListeners();
+    });
   }
 
   void updateProduct(String id, Product newProduct) {
