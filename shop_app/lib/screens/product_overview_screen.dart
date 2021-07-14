@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shop_app/providers/cart.dart';
+import 'package:shop_app/providers/products.dart';
 import 'package:shop_app/screens/cart_screen.dart';
 import 'package:shop_app/widgets/badge.dart';
 import 'package:shop_app/widgets/drawer.dart';
@@ -19,12 +20,38 @@ class ProductsOverviewScreen extends StatefulWidget {
 
 class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
   var _showFavorite = false;
+  var _isinit = true;
+  var _isLoading = false;
+
+  @override
+  // void initState() {
+  //    Provider.of<Products>(context).fetchAndSetProducts();wont work
+  //   Future.delayed(Duration.zero)
+  //       .then((value) => Provider.of<Products>(context).fetchAndSetProducts());
+  //   super.initState();
+  // }
+
+  @override
+  void didChangeDependencies() {
+    if (_isinit) {
+      setState(() {
+        _isLoading = true;
+      });
+
+      Provider.of<Products>(context).fetchAndSetProducts().then((value) {
+        setState(() {
+          _isLoading = false;
+        });
+      });
+    }
+    super.didChangeDependencies();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('IET STUDENT CHAPTER'),
-        
         actions: <Widget>[
           PopupMenuButton(
               onSelected: (FilterOptions selectedValue) {
@@ -46,7 +73,6 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
                       value: FilterOptions.All,
                     )
                   ],
-                  
               icon: Icon(
                 Icons.more_vert,
               )),
