@@ -29,32 +29,33 @@ class _OrderScreenState extends State<OrderScreen> {
   Widget build(BuildContext context) {
     final ordersData = Provider.of<Orders>(context);
     return Scaffold(
-        appBar: AppBar(
-          title: Text('Your Orders'),
-        ),
-        drawer: AppDrawer(),
-        body: FutureBuilder(
-            future: _ordersFuture,
-            builder: (ctx, dataSnapshot) {
-              if (dataSnapshot.connectionState == ConnectionState.waiting) {
+      appBar: AppBar(
+        title: Text('Your Orders'),
+      ),
+      drawer: AppDrawer(),
+      body: FutureBuilder(
+          future: _ordersFuture,
+          builder: (ctx, dataSnapshot) {
+            if (dataSnapshot.connectionState == ConnectionState.waiting) {
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            } else {
+              if (dataSnapshot.error != null) {
+                //do nothing
                 return Center(
-                  child: CircularProgressIndicator(),
+                  child: Text('Something went wrong'),
                 );
               } else {
-                if (dataSnapshot.error != null) {
-                  //do nothing
-                  return Center(
-                    child: Text('Something went wrong'),
-                  );
-                } else {
-                  return Consumer<Orders>(
-                    builder: (ctx, orderData, child) => ListView.builder(
-                      itemBuilder: (ctx, i) => OrderItem(ordersData.orders[i]),
-                      itemCount: ordersData.orders.length,
-                    ),
-                  );
-                }
+                return Consumer<Orders>(
+                  builder: (ctx, orderData, child) => ListView.builder(
+                    itemBuilder: (ctx, i) => OrderItem(ordersData.orders[i]),
+                    itemCount: ordersData.orders.length,
+                  ),
+                );
               }
-            }));
+            }
+          }),
+    );
   }
 }

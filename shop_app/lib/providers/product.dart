@@ -29,7 +29,7 @@ class Product with ChangeNotifier {
     isFavorite = !isFavorite;
     notifyListeners();
     final url =
-        'https://article-app-c40ae-default-rtdb.firebaseio.com/products.json';
+        'https://article-app-c40ae-default-rtdb.firebaseio.com/products/$id.json';
     try {
       final response = await http.patch(Uri.parse(url),
           body: json.encode({

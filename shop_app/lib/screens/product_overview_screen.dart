@@ -20,32 +20,18 @@ class ProductsOverviewScreen extends StatefulWidget {
 
 class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
   var _showFavorite = false;
-  var _isinit = true;
-  var _isLoading = false;
-
-  @override
-  void initState() {
-    //    Provider.of<Products>(context).fetchAndSetProducts();wont work
-    //   Future.delayed(Duration.zero)
-    //       .then((value) => Provider.of<Products>(context).fetchAndSetProducts());
-    super.initState();
+  Future _productsFuture;
+  Future _obtainProductsFuture() {
+    return Provider.of<Products>(context, listen: false).fetchAndSetProducts();
   }
 
   @override
-  void didChangeDependencies() {
-    if (_isinit) {
-      setState(() {
-        _isLoading = true;
-      });
+  void initState() {
+    //Future.delayed(Duration.zero).then((_) async {
+    // setState(() {
+    _productsFuture = _obtainProductsFuture();
 
-      Provider.of<Products>(context).fetchAndSetProducts().then((_) {
-        setState(() {
-          _isLoading = false;
-        });
-      });
-    }
-    _isinit = false;
-    super.didChangeDependencies();
+    super.initState();
   }
 
   @override
@@ -93,11 +79,24 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
         ],
       ),
       drawer: AppDrawer(),
-      body: _isLoading
-          ? Center(
-              child: CircularProgressIndicator(),
-            )
-          : ProductGrid(_showFavorite),
+      body: FutureBuilder(
+          future: _productsFuture,
+          builder: (ctx, dataSnapshot) {
+            if (dataSnapshot.connectionState == ConnectionState.waiting) {
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            } else {
+              if (dataSnapshot.error != null) {
+                //do nothing
+                return Center(
+                  child: Text('Something went wrong'),
+                );
+              } else {
+                return ProductGrid(_showFavorite);
+              }
+            }
+          }),
     );
   }
 }
