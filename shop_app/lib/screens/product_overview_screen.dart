@@ -24,12 +24,12 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
   var _isLoading = false;
 
   @override
-  // void initState() {
-  //    Provider.of<Products>(context).fetchAndSetProducts();wont work
-  //   Future.delayed(Duration.zero)
-  //       .then((value) => Provider.of<Products>(context).fetchAndSetProducts());
-  //   super.initState();
-  // }
+  void initState() {
+    //    Provider.of<Products>(context).fetchAndSetProducts();wont work
+    //   Future.delayed(Duration.zero)
+    //       .then((value) => Provider.of<Products>(context).fetchAndSetProducts());
+    super.initState();
+  }
 
   @override
   void didChangeDependencies() {
@@ -38,12 +38,13 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
         _isLoading = true;
       });
 
-      Provider.of<Products>(context).fetchAndSetProducts().then((value) {
+      Provider.of<Products>(context).fetchAndSetProducts().then((_) {
         setState(() {
           _isLoading = false;
         });
       });
     }
+    _isinit = false;
     super.didChangeDependencies();
   }
 
@@ -54,28 +55,29 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
         title: Text('IET STUDENT CHAPTER'),
         actions: <Widget>[
           PopupMenuButton(
-              onSelected: (FilterOptions selectedValue) {
-                setState(() {
-                  if (selectedValue == FilterOptions.Favorites) {
-                    _showFavorite = true;
-                  } else {
-                    _showFavorite = false;
-                  }
-                });
-              },
-              itemBuilder: (ctx) => [
-                    PopupMenuItem(
-                      child: Text('Favorite Articles'),
-                      value: FilterOptions.Favorites,
-                    ),
-                    PopupMenuItem(
-                      child: Text('All Articles'),
-                      value: FilterOptions.All,
-                    )
-                  ],
-              icon: Icon(
-                Icons.more_vert,
-              )),
+            onSelected: (FilterOptions selectedValue) {
+              setState(() {
+                if (selectedValue == FilterOptions.Favorites) {
+                  _showFavorite = true;
+                } else {
+                  _showFavorite = false;
+                }
+              });
+            },
+            icon: Icon(
+              Icons.more_vert,
+            ),
+            itemBuilder: (ctx) => [
+              PopupMenuItem(
+                child: Text('Favorite Articles'),
+                value: FilterOptions.Favorites,
+              ),
+              PopupMenuItem(
+                child: Text('All Articles'),
+                value: FilterOptions.All,
+              )
+            ],
+          ),
           Consumer<Cart>(
             builder: (_, cart, ch) =>
                 Badge(child: ch, value: cart.itemCount.toString()),
@@ -91,7 +93,11 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
         ],
       ),
       drawer: AppDrawer(),
-      body: ProductGrid(_showFavorite),
+      body: _isLoading
+          ? Center(
+              child: CircularProgressIndicator(),
+            )
+          : ProductGrid(_showFavorite),
     );
   }
 }

@@ -36,12 +36,10 @@ class Product with ChangeNotifier {
             'isFavorite': isFavorite,
           }));
       if (response.statusCode >= 400) {
-        isFavorite = oldStatus;
-        notifyListeners();
+        _setFavValue(oldStatus);
       }
     } catch (error) {
-      isFavorite = oldStatus;
-      notifyListeners();
+      _setFavValue(oldStatus);
     }
   }
 }
