@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:shop_app/providers/auth.dart';
 import '../providers/product.dart';
 import 'package:http/http.dart' as http;
 import 'package:shop_app/modals/http_exception.dart';
@@ -8,6 +9,8 @@ class Products with ChangeNotifier {
   List<Product> _items = [
     //fake products before;
   ];
+  final String authToken;
+  Products(this.authToken, this._items);
 
   //var showFavoritesOnly = false;
 
@@ -27,8 +30,8 @@ class Products with ChangeNotifier {
   }
 
   Future<void> fetchAndSetProducts() async {
-    const url =
-        'https://article-app-c40ae-default-rtdb.firebaseio.com/products.json';
+    final url =
+        'https://article-app-c40ae-default-rtdb.firebaseio.com/products.json?auth=$authToken';
     try {
       final response = await http.get(Uri.parse(url));
       final extractedData = json.decode(response.body) as Map<String, dynamic>;
