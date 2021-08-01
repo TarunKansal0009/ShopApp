@@ -106,7 +106,7 @@ class Products with ChangeNotifier {
           'https://article-app-c40ae-default-rtdb.firebaseio.com/products/$id.json?auth=$authToken';
       await http.patch(Uri.parse(url),
           body: jsonEncode({
-            'title': newProduct.id,
+            'title': newProduct.title,
             'price': newProduct.price,
             'description': newProduct.description,
             'imageUrl': newProduct.imageUrl,
