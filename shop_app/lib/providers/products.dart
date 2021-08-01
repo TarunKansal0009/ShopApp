@@ -80,7 +80,6 @@ class Products with ChangeNotifier {
           'price': product.price,
           'description': product.description,
           'imageUrl': product.imageUrl,
-          'isFavorite': product.isFavorite,
           'creatorId': userId,
         }),
       );
