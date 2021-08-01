@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:shop_app/providers/auth.dart';
 import '../providers/product.dart';
 import 'package:http/http.dart' as http;
 import 'package:shop_app/modals/http_exception.dart';
@@ -84,7 +83,7 @@ class Products with ChangeNotifier {
         }),
       );
       final newProduct = Product(
-        id: jsonDecode(response.body)['name'],
+        id: json.decode(response.body)['name'],
         description: product.description,
         title: product.title,
         price: product.price,
@@ -104,7 +103,7 @@ class Products with ChangeNotifier {
       final url =
           'https://article-app-c40ae-default-rtdb.firebaseio.com/products/$id.json?auth=$authToken';
       await http.patch(Uri.parse(url),
-          body: jsonEncode({
+          body: json.encode({
             'title': newProduct.title,
             'price': newProduct.price,
             'description': newProduct.description,
