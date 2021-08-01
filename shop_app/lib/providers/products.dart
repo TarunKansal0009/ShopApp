@@ -33,7 +33,7 @@ class Products with ChangeNotifier {
     final filterString =
         filterByUser ? 'orderBy="creatorId"&equalTo="$userId"' : '';
     var url =
-        'https://article-app-c40ae-default-rtdb.firebaseio.com/products.json?auth=$authToken&$filterString';
+        'https://article-app-c40ae-default-rtdb.firebaseio.com/products/.json?auth=$authToken&$filterString';
     try {
       final response = await http.get(Uri.parse(url));
       final extractedData = json.decode(response.body) as Map<String, dynamic>;
@@ -48,8 +48,8 @@ class Products with ChangeNotifier {
       );
       final favoriteData = json.decode(favoriteResponse.body);
       final List<Product> loadedProducts = [];
-      extractedData.forEach((prodId, prodData) {
-        loadedProducts.add(
+      extractedData.forEach(
+        (prodId, prodData) => loadedProducts.add(
           Product(
             id: prodId,
             title: prodData['title'],
@@ -59,8 +59,8 @@ class Products with ChangeNotifier {
             isFavorite:
                 favoriteData == null ? false : favoriteData[prodId] ?? false,
           ),
-        );
-      });
+        ),
+      );
       _items = loadedProducts;
       notifyListeners();
     } catch (error) {
@@ -124,6 +124,8 @@ class Products with ChangeNotifier {
     final existingProductIndex =
         _items.indexWhere((element) => element.id == id);
     var existingProduct = _items[existingProductIndex];
+    _items.removeAt(existingProductIndex);
+    notifyListeners();
     final response = await http.delete(Uri.parse(url));
     if (response.statusCode >= 400) {
       items.insert(existingProductIndex, existingProduct);
@@ -131,7 +133,5 @@ class Products with ChangeNotifier {
       throw HttpException('Could not delete product.');
     }
     existingProduct = null;
-    _items.removeAt(existingProductIndex);
-    notifyListeners();
   }
 }
